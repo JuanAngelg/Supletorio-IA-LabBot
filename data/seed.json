@@ -1,0 +1,30 @@
+{
+  "_nota": "Datos de prueba ficticios. Los secretos TOTP solo sirven para el mecanismo alternativo de autenticación en este entorno de pruebas.",
+  "users": [
+    {"id": "est-001", "name": "Ana Torres", "email": "ana.torres@lab.test", "role": "estudiante", "totp_secret": "JBSWY3DPEHPK3PXPANATORRESLABTEST"},
+    {"id": "est-002", "name": "Bruno Paredes", "email": "bruno.paredes@lab.test", "role": "estudiante", "totp_secret": "JBSWY3DPEHPK3PXPBRUNOPARELABTEST"},
+    {"id": "est-003", "name": "Carla Méndez", "email": "carla.mendez@lab.test", "role": "estudiante", "totp_secret": "JBSWY3DPEHPK3PXPCARLAMENDLABTEST"},
+    {"id": "est-004", "name": "Diego Ríos", "email": "diego.rios@lab.test", "role": "estudiante", "totp_secret": "JBSWY3DPEHPK3PXPDIEGORIOSLABTEST"},
+    {"id": "enc-001", "name": "Elena Vásquez", "email": "elena.vasquez@lab.test", "role": "encargado", "totp_secret": "JBSWY3DPEHPK3PXPELENAVASQLABTEST"},
+    {"id": "aud-001", "name": "Fernando Lima", "email": "fernando.lima@lab.test", "role": "auditor", "totp_secret": "JBSWY3DPEHPK3PXPFERNANDOLLABTEST"}
+  ],
+  "equipment": [
+    {"id": "OSC-01", "name": "Osciloscopio Tektronix TBS1052B", "type": "osciloscopio", "status": "disponible", "location": "Mesa 1", "requires_training": true},
+    {"id": "OSC-02", "name": "Osciloscopio Rigol DS1054Z", "type": "osciloscopio", "status": "disponible", "location": "Mesa 2", "requires_training": true},
+    {"id": "OSC-03", "name": "Osciloscopio Keysight DSOX1102G", "type": "osciloscopio", "status": "mantenimiento", "location": "Bodega", "requires_training": true},
+    {"id": "GEN-01", "name": "Generador de funciones Rigol DG1022Z", "type": "generador", "status": "disponible", "location": "Mesa 1", "requires_training": false},
+    {"id": "MUL-01", "name": "Multímetro Fluke 117", "type": "multimetro", "status": "disponible", "location": "Armario A", "requires_training": false},
+    {"id": "MUL-02", "name": "Multímetro Fluke 117", "type": "multimetro", "status": "disponible", "location": "Armario A", "requires_training": false},
+    {"id": "FUE-01", "name": "Fuente DC Rigol DP832", "type": "fuente", "status": "disponible", "location": "Mesa 3", "requires_training": false},
+    {"id": "ANA-01", "name": "Analizador lógico Saleae Logic Pro 8", "type": "analizador", "status": "disponible", "location": "Armario B", "requires_training": true}
+  ],
+  "trainings": [
+    {"user_id": "est-001", "equipment_type": "osciloscopio", "approved_at": "2026-09-10"},
+    {"user_id": "est-001", "equipment_type": "analizador", "approved_at": "2026-09-10"},
+    {"user_id": "est-002", "equipment_type": "osciloscopio", "approved_at": "2026-09-12"},
+    {"user_id": "est-004", "equipment_type": "osciloscopio", "approved_at": "2026-09-12"}
+  ],
+  "sanctions": [
+    {"user_id": "est-004", "reason": "Devolución tardía de MUL-02 (REG-LAB-001 Art. 8)", "until_ts": "2027-01-31T23:59"}
+  ]
+}

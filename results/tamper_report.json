@@ -1,0 +1,165 @@
+{
+  "original": {
+    "integro": true,
+    "eventos": 123,
+    "anclajes_total": 15
+  },
+  "ataques": [
+    {
+      "ataque": "UPDATE desde la aplicación",
+      "accion": "bloqueada por trigger: audit_log es de solo adicion",
+      "resultado": "BLOQUEADO",
+      "esperado": "bloqueado",
+      "tipos_problema": [],
+      "problemas": []
+    },
+    {
+      "ataque": "Modificar un campo",
+      "accion": "se cambió el campo estado del evento 10",
+      "resultado": "DETECTADO",
+      "esperado": "detecta",
+      "tipos_problema": [
+        "contenido_alterado"
+      ],
+      "problemas": [
+        {
+          "seq": 10,
+          "tipo": "contenido_alterado",
+          "detalle": "el HMAC del evento no coincide"
+        }
+      ]
+    },
+    {
+      "ataque": "Borrar un evento intermedio",
+      "accion": "se borró el evento 75 (p. ej. un rechazo de autorización)",
+      "resultado": "DETECTADO",
+      "esperado": "detecta",
+      "tipos_problema": [
+        "enlace_roto",
+        "secuencia_discontinua"
+      ],
+      "problemas": [
+        {
+          "seq": 76,
+          "tipo": "secuencia_discontinua",
+          "detalle": "se esperaba seq 75: faltan o se insertaron eventos"
+        },
+        {
+          "seq": 76,
+          "tipo": "enlace_roto",
+          "detalle": "prev_hash no coincide con el evento anterior"
+        }
+      ]
+    },
+    {
+      "ataque": "Reordenar eventos",
+      "accion": "se intercambió el contenido de los eventos 3 y 4",
+      "resultado": "DETECTADO",
+      "esperado": "detecta",
+      "tipos_problema": [
+        "contenido_alterado"
+      ],
+      "problemas": [
+        {
+          "seq": 3,
+          "tipo": "contenido_alterado",
+          "detalle": "el HMAC del evento no coincide"
+        },
+        {
+          "seq": 4,
+          "tipo": "contenido_alterado",
+          "detalle": "el HMAC del evento no coincide"
+        }
+      ]
+    },
+    {
+      "ataque": "Insertar evento falso sin clave",
+      "accion": "se añadió al final un evento falso sin conocer la clave HMAC",
+      "resultado": "DETECTADO",
+      "esperado": "detecta",
+      "tipos_problema": [
+        "contenido_alterado"
+      ],
+      "problemas": [
+        {
+          "seq": 124,
+          "tipo": "contenido_alterado",
+          "detalle": "el HMAC del evento no coincide"
+        }
+      ]
+    },
+    {
+      "ataque": "Truncar el final ya anclado",
+      "accion": "se borraron los 5 últimos eventos (ya anclados)",
+      "resultado": "DETECTADO",
+      "esperado": "detecta",
+      "tipos_problema": [
+        "truncamiento"
+      ],
+      "problemas": [
+        {
+          "seq": 123,
+          "tipo": "truncamiento",
+          "detalle": "el anclaje registra seq 123 pero el log termina en 118"
+        },
+        {
+          "seq": 123,
+          "tipo": "truncamiento",
+          "detalle": "el anclaje registra seq 123 pero el log termina en 118"
+        }
+      ]
+    },
+    {
+      "ataque": "Truncar y borrar el último anclaje",
+      "accion": "se truncó el log tras seq 123 y se borró el último anclaje",
+      "resultado": "NO DETECTADO",
+      "esperado": "limite",
+      "tipos_problema": [],
+      "problemas": []
+    },
+    {
+      "ataque": "Reescritura completa con la clave HMAC",
+      "accion": "con la clave HMAC se alteró un rechazo y se recalculó toda la cadena (anclajes intactos)",
+      "resultado": "DETECTADO",
+      "esperado": "detecta",
+      "tipos_problema": [
+        "anclaje_no_coincide"
+      ],
+      "problemas": [
+        {
+          "seq": 77,
+          "tipo": "anclaje_no_coincide",
+          "detalle": "el hash anclado difiere: la cadena fue reescrita"
+        },
+        {
+          "seq": 84,
+          "tipo": "anclaje_no_coincide",
+          "detalle": "el hash anclado difiere: la cadena fue reescrita"
+        },
+        {
+          "seq": 92,
+          "tipo": "anclaje_no_coincide",
+          "detalle": "el hash anclado difiere: la cadena fue reescrita"
+        },
+        {
+          "seq": 101,
+          "tipo": "anclaje_no_coincide",
+          "detalle": "el hash anclado difiere: la cadena fue reescrita"
+        },
+        {
+          "seq": 108,
+          "tipo": "anclaje_no_coincide",
+          "detalle": "el hash anclado difiere: la cadena fue reescrita"
+        }
+      ]
+    },
+    {
+      "ataque": "Reescritura con clave + anclajes",
+      "accion": "con la clave HMAC se alteró un rechazo y se recalculó toda la cadena y TAMBIÉN se reescribieron los anclajes",
+      "resultado": "NO DETECTADO",
+      "esperado": "limite",
+      "tipos_problema": [],
+      "problemas": []
+    }
+  ]
+}

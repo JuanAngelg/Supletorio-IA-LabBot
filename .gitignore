@@ -1,0 +1,13 @@
+# Datos locales, claves y bases de datos
+var/
+.env
+models/*.onnx
+datos_voluntarios/
+
+# Artefactos de evaluación intermedios (los informes JSON sí se versionan)
+results/eval_var_*/
+results/demo_var/
+
+__pycache__/
+*.pyc
+.pytest_cache/

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LabBot — Asistente del laboratorio</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <h1>LabBot <span class="muted">laboratorio</span></h1>
+
+    <section class="card">
+      <h2>Identidad declarada</h2>
+      <select id="userSelect"></select>
+      <button id="newSessionBtn" class="primary">Nueva sesión</button>
+      <div id="whoami" class="muted small"></div>
+    </section>
+
+    <section class="card">
+      <h2>Verificación</h2>
+      <div id="authBadge" class="badge off">Sin verificar</div>
+      <div class="row">
+        <button id="faceBtn">Verificar rostro</button>
+        <button id="totpBtn">Código alternativo</button>
+      </div>
+      <div class="row">
+        <button id="enrollBtn" class="ghost">Enrolar rostro</button>
+        <button id="deleteBioBtn" class="ghost">Eliminar mis datos biométricos</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Estrategia</h2>
+      <div class="seg">
+        <label><input type="radio" name="strategy" value="router" checked> Router</label>
+        <label><input type="radio" name="strategy" value="agente"> Agente</label>
+      </div>
+      <div id="llmInfo" class="muted small"></div>
+    </section>
+
+    <section class="card grow">
+      <h2>Sesiones</h2>
+      <ul id="sessionList" class="sessions"></ul>
+    </section>
+  </aside>
+
+  <main class="chat">
+    <div id="messages" class="messages">
+      <div class="empty">Declare su identidad y cree una sesión para empezar.</div>
+    </div>
+    <form id="chatForm" class="composer">
+      <input id="chatInput" autocomplete="off" placeholder="Escriba su solicitud…" disabled>
+      <button class="primary" id="sendBtn" disabled>Enviar</button>
+    </form>
+  </main>
+
+  <aside class="trace">
+    <div class="tabs">
+      <button data-tab="audit" class="active">Trazabilidad</button>
+      <button data-tab="db">Estado BD</button>
+      <button data-tab="faults">Fallos</button>
+    </div>
+    <div id="tab-audit" class="tab">
+      <div class="row">
+        <button id="exportBtn">Exportar auditoría de la sesión</button>
+        <button id="verifyBtn">Verificar integridad</button>
+      </div>
+      <div id="integrity" class="small"></div>
+      <div id="auditView" class="timeline muted small">Haga clic en el identificador de una respuesta para ver su traza.</div>
+    </div>
+    <div id="tab-db" class="tab hidden">
+      <button id="refreshDb">Actualizar</button>
+      <div id="dbView" class="small"></div>
+    </div>
+    <div id="tab-faults" class="tab hidden">
+      <p class="small muted">Inyección de fallos para el escenario D (solo modo demostración).</p>
+      <label class="toggle"><input type="checkbox" data-fault="db_down"> Base de datos de operaciones caída</label>
+      <label class="toggle"><input type="checkbox" data-fault="mcp_down"> Servidor MCP sin respuesta</label>
+      <label class="toggle"><input type="checkbox" data-fault="mcp_drop_response" data-list="crear_reserva,cancelar_reserva"> MCP ejecuta pero pierde la respuesta</label>
+      <label class="toggle"><input type="checkbox" data-fault="face_down"> Servicio facial caído</label>
+      <label class="toggle"><input type="checkbox" data-fault="llm_down"> LLM sin respuesta</label>
+      <button id="resetDemo" class="ghost">Restablecer datos de prueba</button>
+    </div>
+  </aside>
+</div>
+
+<dialog id="faceDialog">
+  <h3 id="faceTitle">Verificación facial</h3>
+  <p id="faceStep" class="step">Preparando cámara…</p>
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas" hidden></canvas>
+  <p class="small muted">Las imágenes se envían solo al servicio facial, se procesan en memoria y no se guardan. El asistente nunca las recibe.</p>
+  <div id="consentBox" class="hidden">
+    <p class="small">Consentimiento (POL-BIO-001 v1.0): autorizo el uso de mi rostro <b>solo</b> para verificar mi identidad en este asistente. Se guarda una plantilla numérica cifrada durante 180 días como máximo; puedo eliminarla en cualquier momento y usar el código alternativo sin desventaja.</p>
+    <label><input type="checkbox" id="consentCheck"> Acepto de forma voluntaria</label>
+  </div>
+  <div class="row end">
+    <button id="faceCancel" class="ghost">Cancelar</button>
+    <button id="faceGo" class="primary">Comenzar</button>
+  </div>
+</dialog>
+
+<dialog id="totpDialog">
+  <form method="dialog" id="totpForm">
+    <h3>Código temporal alternativo</h3>
+    <p class="small muted">Escriba el código de 6 dígitos de su aplicación autenticadora. No lo escriba en el chat.</p>
+    <input id="totpInput" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+    <p id="totpMsg" class="small"></p>
+    <div class="row end">
+      <button type="button" id="totpCancel" class="ghost">Cancelar</button>
+      <button id="totpSubmit" type="submit" class="primary">Verificar</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
